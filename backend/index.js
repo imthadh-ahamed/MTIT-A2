@@ -3,6 +3,8 @@ const express=require('express')
 const cors=require('cors')
 const morgan=require("morgan")
 const cookieParser=require("cookie-parser")
+const swaggerUi=require('swagger-ui-express')
+const swaggerDocument=require('./swagger')
 const authRoutes=require("./routes/Auth")
 const productRoutes=require("./routes/Product")
 const orderRoutes=require("./routes/Order")
@@ -28,6 +30,9 @@ server.use(cors({origin:process.env.ORIGIN,credentials:true,exposedHeaders:['X-T
 server.use(express.json())
 server.use(cookieParser())
 server.use(morgan("tiny"))
+
+// swagger docs
+server.use('/docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 
 // routeMiddleware
 server.use("/auth",authRoutes)
