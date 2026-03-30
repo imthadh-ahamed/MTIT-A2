@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: mern-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # React runs in the browser, so it must call the backend
+        # via the host machine port, not the Docker service name.
+        REACT_APP_BASE_URL: http://localhost:8000
+    container_name: mern-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
